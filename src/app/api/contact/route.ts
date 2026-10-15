@@ -90,23 +90,33 @@ export async function POST(request: Request) {
 
     // Local development: persist to disk; email if a key is present.
     const saved = await saveMessage(parsed.data);
-    let emailed = false;
 
     if (process.env.RESEND_API_KEY) {
       try {
         await sendEmail(parsed.data);
-        emailed = true;
       } catch (error) {
         console.error("Contact email failed:", error);
+        return NextResponse.json(
+          { error: "Could not send your message. Please try again shortly." },
+          { status: 502 },
+        );
       }
+
+      return NextResponse.json({
+        ok: true,
+        id: saved.id,
+        emailed: true,
+        stored: true,
+      });
     }
 
     return NextResponse.json({
       ok: true,
       id: saved.id,
-      emailed,
+      emailed: false,
       stored: true,
     });
+
   } catch (error) {
     console.error("Contact API failed:", error);
     return NextResponse.json(

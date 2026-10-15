@@ -38,17 +38,19 @@ cp .env.example .env.local
 ```env
 RESEND_API_KEY=re_xxx
 CONTACT_FROM_EMAIL=onboarding@resend.dev
-CONTACT_TO_EMAIL=danila.foxman@gmail.com
+CONTACT_TO_EMAIL=
 ```
+
+`CONTACT_TO_EMAIL` defaults to the address in `src/lib/site.ts` when left empty.
 
 ## GitHub projects
 
-Repositories are fetched for `Jogeer` by default (`https://github.com/Jogeer`).
+Repositories are fetched for `Fox26601` by default (`https://github.com/Fox26601`).
 
 Override with:
 
 ```env
-GITHUB_USERNAME=Jogeer
+GITHUB_USERNAME=Fox26601
 GITHUB_TOKEN=optional_personal_access_token
 ```
 
@@ -76,9 +78,9 @@ Create a public GitHub repository for this project (Cursor: **Create repo** if y
 | Name | Value |
 | --- | --- |
 | `RESEND_API_KEY` | your Resend key (`re_…`) |
-| `CONTACT_TO_EMAIL` | `danila.foxman@gmail.com` |
+| `CONTACT_TO_EMAIL` | optional — defaults to `site.email` |
 | `CONTACT_FROM_EMAIL` | `onboarding@resend.dev` |
-| `GITHUB_USERNAME` | `Jogeer` |
+| `GITHUB_USERNAME` | `Fox26601` (optional if matching `site.ts`) |
 
 5. Click **Deploy**. You get a URL like `https://your-project.vercel.app`.
 

@@ -60,7 +60,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-5" noValidate>
+    <form onSubmit={onSubmit} className="grid gap-5">
       <div className="grid gap-2">
         <Label htmlFor="name">Name</Label>
         <Input

@@ -40,9 +40,3 @@ export async function saveMessage(
 
   return entry;
 }
-
-export async function listMessages(): Promise<ContactMessage[]> {
-  await ensureStore();
-  const raw = await fs.readFile(messagesPath, "utf8");
-  return JSON.parse(raw || "[]") as ContactMessage[];
-}

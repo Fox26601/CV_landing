@@ -1,4 +1,4 @@
-import { Mail } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 import { ContactForm } from "@/components/contact-form";
 import { site } from "@/lib/site";
@@ -19,13 +19,30 @@ export function ContactSection() {
             I’ll reply as soon as I can.
           </p>
 
-          <a
-            href={`mailto:${site.email}`}
-            className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-teal-900 hover:underline"
-          >
-            <Mail className="size-4" />
-            {site.email}
-          </a>
+          <ul className="mt-8 space-y-3 text-sm text-slate-700">
+            <li>
+              <a
+                href={`mailto:${site.email}`}
+                className="inline-flex items-center gap-2 font-medium text-teal-900 hover:underline"
+              >
+                <Mail className="size-4 shrink-0" />
+                {site.email}
+              </a>
+            </li>
+            <li>
+              <a
+                href={`tel:${site.phone.replace(/\s+/g, "")}`}
+                className="inline-flex items-center gap-2 hover:underline"
+              >
+                <Phone className="size-4 shrink-0 text-teal-800" />
+                {site.phone}
+              </a>
+            </li>
+            <li className="inline-flex items-center gap-2">
+              <MapPin className="size-4 shrink-0 text-teal-800" />
+              {site.location}
+            </li>
+          </ul>
         </div>
 
         <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.35)] backdrop-blur sm:p-8">

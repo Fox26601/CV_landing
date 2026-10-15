@@ -3,13 +3,15 @@ import path from "path";
 import mammoth from "mammoth";
 import { NextResponse } from "next/server";
 
+import { site } from "@/lib/site";
+
 export async function GET() {
   try {
     const filePath = path.join(
       process.cwd(),
       "public",
       "resume",
-      "Daniil_Gorlov_CV.docx",
+      site.resumeFileName,
     );
     const buffer = await fs.readFile(filePath);
     const result = await mammoth.convertToHtml({ buffer });
