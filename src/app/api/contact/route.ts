@@ -10,13 +10,17 @@ const contactSchema = z.object({
   message: z.string().trim().min(10).max(2000),
 });
 
-async function sendEmailIfConfigured(payload: {
+const isProduction = process.env.NODE_ENV === "production";
+
+async function sendEmail(payload: {
   name: string;
   email: string;
   message: string;
 }) {
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) return { emailed: false as const };
+  if (!apiKey) {
+    throw new Error("RESEND_API_KEY is not configured");
+  }
 
   const from = process.env.CONTACT_FROM_EMAIL ?? "onboarding@resend.dev";
   const to = process.env.CONTACT_TO_EMAIL ?? site.email;
@@ -40,8 +44,6 @@ async function sendEmailIfConfigured(payload: {
     const detail = await response.text();
     throw new Error(`Email provider error: ${detail}`);
   }
-
-  return { emailed: true as const };
 }
 
 export async function POST(request: Request) {
@@ -56,14 +58,47 @@ export async function POST(request: Request) {
       );
     }
 
+    // Vercel (and other serverless hosts) cannot persist local files.
+    // Production always delivers via Resend.
+    if (isProduction) {
+      if (!process.env.RESEND_API_KEY) {
+        return NextResponse.json(
+          {
+            error:
+              "Contact form is not configured yet. Please email me directly.",
+          },
+          { status: 503 },
+        );
+      }
+
+      try {
+        await sendEmail(parsed.data);
+      } catch (error) {
+        console.error("Contact email failed:", error);
+        return NextResponse.json(
+          { error: "Could not send your message. Please try again shortly." },
+          { status: 502 },
+        );
+      }
+
+      return NextResponse.json({
+        ok: true,
+        emailed: true,
+        stored: false,
+      });
+    }
+
+    // Local development: persist to disk; email if a key is present.
     const saved = await saveMessage(parsed.data);
     let emailed = false;
 
-    try {
-      const result = await sendEmailIfConfigured(parsed.data);
-      emailed = result.emailed;
-    } catch (error) {
-      console.error("Contact email failed:", error);
+    if (process.env.RESEND_API_KEY) {
+      try {
+        await sendEmail(parsed.data);
+        emailed = true;
+      } catch (error) {
+        console.error("Contact email failed:", error);
+      }
     }
 
     return NextResponse.json({

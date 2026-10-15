@@ -45,7 +45,7 @@ export function ContactForm() {
       toast.success("Message sent", {
         description: data.emailed
           ? "Thanks — I’ll get back to you soon."
-          : "Thanks — your message was saved and I’ll follow up soon.",
+          : "Thanks — your message was saved locally. I’ll follow up soon.",
       });
     } catch (error) {
       toast.error("Couldn’t send message", {
