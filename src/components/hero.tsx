@@ -1,5 +1,6 @@
 import { ArrowDownRight } from "lucide-react";
 
+import { AiUsageModal } from "@/components/ai-usage-modal";
 import { ResumeModal } from "@/components/resume-modal";
 import { Button } from "@/components/ui/button";
 import { site } from "@/lib/site";
@@ -52,6 +53,9 @@ export function Hero() {
                 <ArrowDownRight className="size-4" />
               </a>
             </Button>
+          </div>
+          <div className="animate-rise mt-3" style={{ animationDelay: "280ms" }}>
+            <AiUsageModal />
           </div>
         </div>
       </div>
