@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { aiCases, aiPrinciples, aiStance } from "@/lib/ai-usage";
+import { aiCases, aiStance, aiWorkflow } from "@/lib/ai-usage";
 
 type AiUsageModalProps = {
   triggerClassName?: string;
@@ -21,6 +21,12 @@ export function AiUsageModal({ triggerClassName }: AiUsageModalProps) {
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState(aiCases[0]?.id ?? "");
   const activeCase = aiCases.find((item) => item.id === activeId) ?? aiCases[0];
+  const phaseOffsets = aiWorkflow.reduce<number[]>((offsets, phase, index) => {
+    const previous =
+      index === 0 ? 0 : offsets[index - 1] + aiWorkflow[index - 1].steps.length;
+    offsets.push(previous);
+    return offsets;
+  }, []);
 
   return (
     <>
@@ -50,21 +56,49 @@ export function AiUsageModal({ triggerClassName }: AiUsageModalProps) {
           </DialogHeader>
 
           <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-5 py-5 sm:px-6">
-            <ul className="grid gap-2 sm:grid-cols-3">
-              {aiPrinciples.map((principle) => (
-                <li
-                  key={principle.title}
-                  className="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-3.5 py-3"
-                >
-                  <p className="text-sm font-medium text-slate-950">
-                    {principle.title}
-                  </p>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                    {principle.detail}
-                  </p>
-                </li>
-              ))}
-            </ul>
+            <div>
+              <p className="mb-2 text-xs font-medium tracking-[0.16em] text-teal-800 uppercase">
+                My workflow
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {aiWorkflow.map((phase, phaseIndex) => (
+                  <section
+                    key={phase.title}
+                    className="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-3.5 py-3"
+                  >
+                    <h3 className="text-xs font-medium tracking-[0.14em] text-teal-800 uppercase">
+                      {phase.title}
+                    </h3>
+                    <ol className="mt-2 space-y-2.5">
+                      {phase.steps.map((step, stepIndex) => {
+                        const number = phaseOffsets[phaseIndex] + stepIndex + 1;
+                        return (
+                          <li
+                            key={`${phase.title}-${step.title}`}
+                            className="flex gap-2.5"
+                          >
+                            <span
+                              aria-hidden
+                              className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-teal-800 text-[0.65rem] font-semibold text-white"
+                            >
+                              {number}
+                            </span>
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium text-slate-950">
+                                {step.title}
+                              </p>
+                              <p className="mt-0.5 text-xs leading-relaxed text-slate-600">
+                                {step.detail}
+                              </p>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </section>
+                ))}
+              </div>
+            </div>
 
             <div>
               <p className="mb-2 text-xs font-medium tracking-[0.16em] text-teal-800 uppercase">

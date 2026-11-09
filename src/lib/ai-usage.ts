@@ -10,26 +10,84 @@ export type AiCase = {
   link?: string;
 };
 
-export type AiPrinciple = {
+export type AiWorkflowStep = {
   title: string;
   detail: string;
+};
+
+export type AiWorkflowPhase = {
+  title: string;
+  steps: AiWorkflowStep[];
 };
 
 export const aiStance =
   "AI drafts and speeds things up. I set the context, check the output, and own the result.";
 
-export const aiPrinciples: AiPrinciple[] = [
+export const aiWorkflow: AiWorkflowPhase[] = [
   {
-    title: "Context first",
-    detail: "Spec, rules, and constraints up front.",
+    title: "Understand",
+    steps: [
+      {
+        title: "Context",
+        detail: "I give specs, constraints, and project rules up front.",
+      },
+      {
+        title: "Analysis",
+        detail: "AI maps code, logs, and docs; I confirm findings.",
+      },
+      {
+        title: "Clarify",
+        detail: "AI asks open questions; I make the calls.",
+      },
+    ],
   },
   {
-    title: "Small steps",
-    detail: "One change, one check.",
+    title: "Plan",
+    steps: [
+      {
+        title: "Plan",
+        detail: "AI drafts files, steps, and todos.",
+      },
+      {
+        title: "Plan review",
+        detail: "I check it against requirements and cut scope.",
+      },
+    ],
   },
   {
-    title: "I own the result",
-    detail: "Review the diff, test before it ships.",
+    title: "Build",
+    steps: [
+      {
+        title: "Implement",
+        detail: "AI codes in small, reviewable steps.",
+      },
+      {
+        title: "Verify",
+        detail: "Lint, build, tests, then I test mobile and desktop.",
+      },
+      {
+        title: "Code review",
+        detail:
+          "I read the diff; a separate pass checks bugs and security.",
+      },
+      {
+        title: "Refine",
+        detail: "Fix what review found, then re-check.",
+      },
+    ],
+  },
+  {
+    title: "Ship",
+    steps: [
+      {
+        title: "Ship",
+        detail: "Commit under my name, deploy, smoke-test production.",
+      },
+      {
+        title: "Retro",
+        detail: "Lessons go into project rules so mistakes don't repeat.",
+      },
+    ],
   },
 ];
 
