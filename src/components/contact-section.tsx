@@ -15,8 +15,7 @@ export function ContactSection() {
             Let’s talk
           </h2>
           <p className="mt-3 max-w-md text-base leading-relaxed text-slate-600 sm:text-lg">
-            Open to QA roles, game projects, and collaboration. Send a note and
-            I’ll reply as soon as I can.
+            {site.availability}. Send a note and I’ll reply as soon as I can.
           </p>
 
           <ul className="mt-8 space-y-3 text-sm text-slate-700">

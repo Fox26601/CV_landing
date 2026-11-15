@@ -24,6 +24,9 @@ export function SiteHeader() {
           {site.name}
         </a>
         <nav className="flex items-center gap-5 text-sm text-slate-700">
+          <a href="#about" className="hidden hover:text-slate-950 sm:inline">
+            About
+          </a>
           <a href="#projects" className="hidden hover:text-slate-950 sm:inline">
             Projects
           </a>

@@ -20,9 +20,9 @@ Open [http://localhost:4317](http://localhost:4317).
 
 ## Resume
 
-The DOCX resume lives at `public/resume/Daniil_Gorlov_CV.docx`.
+The PDF resume lives at `public/resume/Daniil_Gorlov_CV.pdf`.
 
-The **View resume** button opens it in a modal (HTML preview via Mammoth) and offers a DOCX download.
+The **View resume** button opens a modal with an embedded PDF preview and a PDF download.
 
 ## Contact form backend
 
@@ -87,7 +87,7 @@ Create a public GitHub repository for this project (Cursor: **Create repo** if y
 ### 4. Smoke-check after deploy
 
 - Open the site and confirm the hero + GitHub projects load.
-- **View resume** opens the modal and **Download DOCX** works.
+- **View resume** opens the modal and **Download PDF** works.
 - Submit the contact form — you should receive an email. Without `RESEND_API_KEY`, the form returns an error in production on purpose.
 
 Later deploys: every push to `main` redeploys automatically.
