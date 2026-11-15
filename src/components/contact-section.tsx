@@ -15,7 +15,8 @@ export function ContactSection() {
             Let’s talk
           </h2>
           <p className="mt-3 max-w-md text-base leading-relaxed text-slate-600 sm:text-lg">
-            {site.availability}. Send a note and I’ll reply as soon as I can.
+            Send a note about a role, project, or question — I’ll reply as soon
+            as I can.
           </p>
 
           <ul className="mt-8 space-y-3 text-sm text-slate-700">

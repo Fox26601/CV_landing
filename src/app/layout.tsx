@@ -16,7 +16,9 @@ const sans = Manrope({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://cvgorlov.vercel.app"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://cvgorlov.vercel.app",
+  ),
   title: `${site.name} — ${site.title}`,
   description: site.tagline,
   openGraph: {

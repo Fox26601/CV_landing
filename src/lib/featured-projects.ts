@@ -10,7 +10,7 @@ export type FeaturedProject = {
 export const featuredProjects: FeaturedProject[] = [
   {
     slug: "WEB_exibition",
-    name: "WEB_exibition",
+    name: "Web Exhibition",
     summary:
       "Unity WebGL art gallery with Next.js admin CMS, catalog API, and a Three.js exhibition fallback.",
     repo: "Fox26601/WEB_exibition",
@@ -20,13 +20,14 @@ export const featuredProjects: FeaturedProject[] = [
   {
     slug: "SYMP",
     name: "SYMP",
-    summary: "Go service for the SymbolicPleasures coin / token flow.",
+    summary:
+      "Go backend service for catalog and checkout plumbing on a creator booking platform.",
     repo: "Fox26601/SYMP",
     language: "Go",
   },
   {
     slug: "Unity_multiplayer",
-    name: "Unity_multiplayer",
+    name: "Unity Multiplayer",
     summary:
       "Photon Fusion multiplayer coursework — authority, RPCs, spawn/despawn, and synced sessions.",
     repo: "Fox26601/Unity_multiplayer",
@@ -34,7 +35,7 @@ export const featuredProjects: FeaturedProject[] = [
   },
   {
     slug: "IT-asistant",
-    name: "IT-asistant",
+    name: "AI Sales Agent",
     summary:
       "AI sales agent that qualifies Telegram and web leads with tool boundaries and owner confirmation.",
     repo: "Fox26601/IT-asistant",

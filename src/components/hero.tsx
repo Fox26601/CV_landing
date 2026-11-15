@@ -31,6 +31,12 @@ export function Hero() {
             {site.name}
           </h1>
           <p
+            className="animate-rise mt-4 text-lg font-medium text-teal-900 sm:text-xl"
+            style={{ animationDelay: "80ms" }}
+          >
+            {site.title}
+          </p>
+          <p
             className="animate-rise mt-5 max-w-xl text-lg leading-relaxed text-slate-700 sm:text-xl"
             style={{ animationDelay: "120ms" }}
           >

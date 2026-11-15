@@ -1,6 +1,6 @@
 export const webExhibitionCase = {
   id: "web-exhibition",
-  title: "WEB_exibition",
+  title: "Web Exhibition",
   eyebrow: "Case study",
   headline: "WebGL art gallery with a publishable catalog",
   context:
@@ -21,5 +21,5 @@ export const webExhibitionCase = {
   outcome:
     "One pipeline from upload → draft catalog → publish → live 3D room, with media limits and multi-language bio settings.",
   repoUrl: "https://github.com/Fox26601/WEB_exibition",
-  repoLabel: "View WEB_exibition on GitHub",
+  repoLabel: "View Web Exhibition on GitHub",
 } as const;

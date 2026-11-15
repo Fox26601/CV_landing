@@ -1,3 +1,9 @@
+"use client";
+
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
+
+import { ResumeModal } from "@/components/resume-modal";
 import { site } from "@/lib/site";
 
 function GitHubMark({ className }: { className?: string }) {
@@ -29,7 +35,38 @@ function LinkedInMark({ className }: { className?: string }) {
 const socialPillClassName =
   "inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-white/50 px-3 py-1.5 backdrop-blur transition hover:bg-white";
 
+const navLinkClassName = "hover:text-slate-950";
+
+function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
+  return (
+    <>
+      <a href="#about" className={navLinkClassName} onClick={onNavigate}>
+        About
+      </a>
+      <a href="#experience" className={navLinkClassName} onClick={onNavigate}>
+        Experience
+      </a>
+      <a href="#projects" className={navLinkClassName} onClick={onNavigate}>
+        Projects
+      </a>
+      <a href="#contact" className={navLinkClassName} onClick={onNavigate}>
+        Contact
+      </a>
+      <ResumeModal
+        triggerLabel="Resume"
+        triggerSize="sm"
+        triggerVariant="ghost"
+        triggerClassName="h-auto px-0 py-0 text-sm font-normal text-slate-700 hover:bg-transparent hover:text-slate-950"
+      />
+    </>
+  );
+}
+
 export function SiteHeader() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <header className="absolute inset-x-0 top-0 z-20">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-5 sm:px-8 sm:py-6">
@@ -39,16 +76,9 @@ export function SiteHeader() {
         >
           {site.name}
         </a>
-        <nav className="flex items-center gap-3 text-sm text-slate-700 sm:gap-5">
-          <a href="#about" className="hidden hover:text-slate-950 sm:inline">
-            About
-          </a>
-          <a href="#projects" className="hidden hover:text-slate-950 sm:inline">
-            Projects
-          </a>
-          <a href="#contact" className="hidden hover:text-slate-950 sm:inline">
-            Contact
-          </a>
+
+        <nav className="hidden items-center gap-5 text-sm text-slate-700 sm:flex">
+          <NavLinks />
           <a
             href={site.githubUrl}
             target="_blank"
@@ -57,7 +87,7 @@ export function SiteHeader() {
             aria-label="GitHub profile"
           >
             <GitHubMark className="size-4" />
-            <span className="hidden sm:inline">GitHub</span>
+            GitHub
           </a>
           <a
             href={site.linkedin}
@@ -67,10 +97,50 @@ export function SiteHeader() {
             aria-label="LinkedIn profile"
           >
             <LinkedInMark className="size-4" />
-            <span className="hidden sm:inline">LinkedIn</span>
+            LinkedIn
           </a>
         </nav>
+
+        <button
+          type="button"
+          className="inline-flex items-center justify-center rounded-md border border-slate-200/80 bg-white/60 p-2 text-slate-800 backdrop-blur sm:hidden"
+          aria-expanded={menuOpen}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+        </button>
       </div>
+
+      {menuOpen ? (
+        <div className="border-b border-slate-200/80 bg-white/95 px-5 py-4 backdrop-blur sm:hidden">
+          <nav className="flex flex-col gap-3 text-sm text-slate-700">
+            <NavLinks onNavigate={closeMenu} />
+            <div className="mt-2 flex flex-wrap gap-2 border-t border-slate-200/80 pt-3">
+              <a
+                href={site.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                className={socialPillClassName}
+                onClick={closeMenu}
+              >
+                <GitHubMark className="size-4" />
+                GitHub
+              </a>
+              <a
+                href={site.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className={socialPillClassName}
+                onClick={closeMenu}
+              >
+                <LinkedInMark className="size-4" />
+                LinkedIn
+              </a>
+            </div>
+          </nav>
+        </div>
+      ) : null}
     </header>
   );
 }

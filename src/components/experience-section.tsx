@@ -24,6 +24,11 @@ export function ExperienceSection() {
                 <p className="text-sm text-slate-600 sm:text-base">
                   {item.company}
                 </p>
+                {item.outcome ? (
+                  <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600">
+                    {item.outcome}
+                  </p>
+                ) : null}
               </div>
               <p className="shrink-0 text-sm tracking-wide text-slate-500">
                 {item.period}
