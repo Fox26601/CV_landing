@@ -13,12 +13,14 @@ type FormState = {
   name: string;
   email: string;
   message: string;
+  website: string;
 };
 
 const initialState: FormState = {
   name: "",
   email: "",
   message: "",
+  website: "",
 };
 
 export function ContactForm() {
@@ -60,7 +62,25 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-5">
+    <form onSubmit={onSubmit} className="relative grid gap-5">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden opacity-0"
+      >
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={values.website}
+          onChange={(event) =>
+            setValues((prev) => ({ ...prev, website: event.target.value }))
+          }
+        />
+      </div>
+
       <div className="grid gap-2">
         <Label htmlFor="name">Name</Label>
         <Input

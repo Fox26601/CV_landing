@@ -1,7 +1,9 @@
 import { Suspense } from "react";
 
 import { AboutSection } from "@/components/about-section";
+import { CaseStudySection } from "@/components/case-study-section";
 import { ContactSection } from "@/components/contact-section";
+import { ExperienceSection } from "@/components/experience-section";
 import { Hero } from "@/components/hero";
 import { ProjectsLoader } from "@/components/projects-loader";
 import { SiteFooter } from "@/components/site-footer";
@@ -33,9 +35,11 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <AboutSection />
+        <ExperienceSection />
         <Suspense fallback={<ProjectsSkeleton />}>
           <ProjectsLoader />
         </Suspense>
+        <CaseStudySection />
         <ContactSection />
       </main>
       <SiteFooter />

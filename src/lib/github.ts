@@ -1,3 +1,4 @@
+import { featuredProjects } from "@/lib/featured-projects";
 import { site } from "@/lib/site";
 
 export type GithubRepo = {
@@ -11,7 +12,18 @@ export type GithubRepo = {
   fork: boolean;
 };
 
-export async function getLatestRepos(limit = 4): Promise<{
+export type DisplayProject = {
+  slug: string;
+  name: string;
+  summary: string;
+  html_url: string;
+  language: string | null;
+  updated_at: string | null;
+  stargazers_count: number;
+  highlight?: boolean;
+};
+
+async function fetchUserRepos(): Promise<{
   repos: GithubRepo[];
   error?: string;
 }> {
@@ -27,7 +39,7 @@ export async function getLatestRepos(limit = 4): Promise<{
 
   try {
     const response = await fetch(
-      `https://api.github.com/users/${username}/repos?sort=updated&per_page=12`,
+      `https://api.github.com/users/${username}/repos?sort=updated&per_page=30`,
       {
         headers,
         next: { revalidate: 3600 },
@@ -42,16 +54,7 @@ export async function getLatestRepos(limit = 4): Promise<{
       };
     }
 
-    const repos = (await response.json()) as GithubRepo[];
-    const filtered = repos
-      .filter((repo) => !repo.fork)
-      .sort(
-        (a, b) =>
-          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
-      )
-      .slice(0, limit);
-
-    return { repos: filtered };
+    return { repos: (await response.json()) as GithubRepo[] };
   } catch (error) {
     console.error("GitHub fetch failed:", error);
     return {
@@ -59,4 +62,28 @@ export async function getLatestRepos(limit = 4): Promise<{
       error: "GitHub fetch failed",
     };
   }
+}
+
+export async function getFeaturedProjects(): Promise<{
+  projects: DisplayProject[];
+  error?: string;
+}> {
+  const { repos, error } = await fetchUserRepos();
+  const byName = new Map(repos.map((repo) => [repo.name, repo]));
+
+  const projects: DisplayProject[] = featuredProjects.map((featured) => {
+    const remote = byName.get(featured.slug);
+    return {
+      slug: featured.slug,
+      name: featured.name,
+      summary: featured.summary,
+      html_url: remote?.html_url ?? `https://github.com/${featured.repo}`,
+      language: remote?.language ?? featured.language ?? null,
+      updated_at: remote?.updated_at ?? null,
+      stargazers_count: remote?.stargazers_count ?? 0,
+      highlight: featured.highlight,
+    };
+  });
+
+  return { projects, error };
 }

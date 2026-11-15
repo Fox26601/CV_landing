@@ -1,6 +1,6 @@
 # Daniil Gorlov — Portfolio
 
-Personal landing page for Daniil Gorlov: short intro, resume viewer/download, latest GitHub projects, and a working contact form.
+Personal landing page for Daniil Gorlov: intro, About, experience strip, curated GitHub projects, WEB_exibition case study, PDF resume, and a contact form.
 
 ## Stack
 
@@ -26,7 +26,7 @@ The **View resume** button opens a modal with an embedded PDF preview and a PDF 
 
 ## Contact form backend
 
-`POST /api/contact` validates the payload with Zod.
+`POST /api/contact` validates the payload with Zod. A hidden honeypot field (`website`) is silently discarded when filled (basic bot filter; no IP rate limit on serverless).
 
 - **Development:** messages are saved to `data/messages.json`. Resend is optional.
 - **Production (Vercel):** `RESEND_API_KEY` is required. Messages are emailed; they are not written to disk (serverless filesystem is ephemeral).
@@ -45,7 +45,7 @@ CONTACT_TO_EMAIL=
 
 ## GitHub projects
 
-Repositories are fetched for `Fox26601` by default (`https://github.com/Fox26601`).
+Featured projects are curated in `src/lib/featured-projects.ts`. The GitHub API enriches language / updated dates for those repos (username `Fox26601` by default).
 
 Override with:
 
@@ -53,6 +53,10 @@ Override with:
 GITHUB_USERNAME=Fox26601
 GITHUB_TOKEN=optional_personal_access_token
 ```
+
+## Open Graph
+
+`src/app/opengraph-image.tsx` generates the share image. `metadataBase` in `src/app/layout.tsx` points at `https://cvgorlov.vercel.app`.
 
 ## Deploy free on Vercel
 

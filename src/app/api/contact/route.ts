@@ -8,6 +8,7 @@ const contactSchema = z.object({
   name: z.string().trim().min(2).max(80),
   email: z.string().trim().email().max(120),
   message: z.string().trim().min(10).max(2000),
+  website: z.string().max(200).optional(),
 });
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -58,6 +59,13 @@ export async function POST(request: Request) {
       );
     }
 
+    // Honeypot: bots that fill hidden "website" are silently accepted.
+    if (parsed.data.website?.trim()) {
+      return NextResponse.json({ ok: true, emailed: false, stored: false });
+    }
+
+    const { name, email, message } = parsed.data;
+
     // Vercel (and other serverless hosts) cannot persist local files.
     // Production always delivers via Resend.
     if (isProduction) {
@@ -72,7 +80,7 @@ export async function POST(request: Request) {
       }
 
       try {
-        await sendEmail(parsed.data);
+        await sendEmail({ name, email, message });
       } catch (error) {
         console.error("Contact email failed:", error);
         return NextResponse.json(
@@ -89,11 +97,11 @@ export async function POST(request: Request) {
     }
 
     // Local development: persist to disk; email if a key is present.
-    const saved = await saveMessage(parsed.data);
+    const saved = await saveMessage({ name, email, message });
 
     if (process.env.RESEND_API_KEY) {
       try {
-        await sendEmail(parsed.data);
+        await sendEmail({ name, email, message });
       } catch (error) {
         console.error("Contact email failed:", error);
         return NextResponse.json(

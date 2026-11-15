@@ -13,6 +13,22 @@ function GitHubMark({ className }: { className?: string }) {
   );
 }
 
+function LinkedInMark({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className={className}
+      fill="currentColor"
+    >
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1-.004-4.125 2.062 2.062 0 0 1 .004 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+    </svg>
+  );
+}
+
+const socialPillClassName =
+  "inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-white/50 px-3 py-1.5 backdrop-blur transition hover:bg-white";
+
 export function SiteHeader() {
   return (
     <header className="absolute inset-x-0 top-0 z-20">
@@ -23,7 +39,7 @@ export function SiteHeader() {
         >
           {site.name}
         </a>
-        <nav className="flex items-center gap-5 text-sm text-slate-700">
+        <nav className="flex items-center gap-3 text-sm text-slate-700 sm:gap-5">
           <a href="#about" className="hidden hover:text-slate-950 sm:inline">
             About
           </a>
@@ -37,11 +53,21 @@ export function SiteHeader() {
             href={site.githubUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-white/50 px-3 py-1.5 backdrop-blur transition hover:bg-white"
+            className={socialPillClassName}
             aria-label="GitHub profile"
           >
             <GitHubMark className="size-4" />
             <span className="hidden sm:inline">GitHub</span>
+          </a>
+          <a
+            href={site.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className={socialPillClassName}
+            aria-label="LinkedIn profile"
+          >
+            <LinkedInMark className="size-4" />
+            <span className="hidden sm:inline">LinkedIn</span>
           </a>
         </nav>
       </div>

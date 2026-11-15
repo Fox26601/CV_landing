@@ -2,7 +2,7 @@ export const site = {
   name: "Daniil Gorlov",
   title: "QA Engineer & Game Design Student",
   tagline:
-    "Detail-oriented QA with three years shipping reliable product quality — now building games with Unity and Unreal.",
+    "Three years in QA shipping reliable products — now building games and internal tools, moving toward Forward Deployed engineering.",
   about:
     "I’m moving toward Forward Deployed Engineer work — embedding with users, shipping tightly scoped fixes, and closing the loop from feedback to production.",
   availability:
@@ -15,4 +15,33 @@ export const site = {
   location: "Tel Aviv, Israel",
   resumePath: "/resume/Daniil_Gorlov_CV.pdf",
   resumeFileName: "Daniil_Gorlov_CV.pdf",
+  experience: [
+    {
+      role: "Game Design student",
+      company: "Tiltan College, Haifa",
+      period: "Sep 2024 – Present",
+    },
+    {
+      role: "Game tester",
+      company: "Memory Lost",
+      period: "Mar – Jun 2023",
+    },
+    {
+      role: "QA Engineer",
+      company: "Pik-Arenda",
+      period: "2021 – 2023",
+    },
+    {
+      role: "QA Manager",
+      company: "Ylab",
+      period: "2020 – 2021",
+    },
+    {
+      role: "QA Engineer",
+      company: "Chestnoe slovo",
+      period: "2019 – 2020",
+    },
+  ],
 } as const;
+
+export type ExperienceItem = (typeof site.experience)[number];

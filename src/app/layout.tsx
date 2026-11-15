@@ -16,12 +16,19 @@ const sans = Manrope({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://cvgorlov.vercel.app"),
   title: `${site.name} — ${site.title}`,
   description: site.tagline,
   openGraph: {
     title: `${site.name} — ${site.title}`,
     description: site.tagline,
     type: "website",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.name} — ${site.title}`,
+    description: site.tagline,
   },
 };
 
