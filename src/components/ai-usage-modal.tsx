@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight, ChevronRight, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState, type KeyboardEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,6 +27,49 @@ export function AiUsageModal({ triggerClassName }: AiUsageModalProps) {
     offsets.push(previous);
     return offsets;
   }, []);
+
+  const focusTab = useCallback((id: string) => {
+    const el = document.getElementById(`ai-case-tab-${id}`);
+    el?.focus();
+  }, []);
+
+  const selectTabByIndex = useCallback(
+    (index: number) => {
+      const item = aiCases[index];
+      if (!item) return;
+      setActiveId(item.id);
+      focusTab(item.id);
+    },
+    [focusTab],
+  );
+
+  const onTabListKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const currentIndex = aiCases.findIndex((item) => item.id === activeId);
+    if (currentIndex < 0) return;
+
+    let nextIndex: number | null = null;
+    switch (event.key) {
+      case "ArrowRight":
+      case "ArrowDown":
+        nextIndex = (currentIndex + 1) % aiCases.length;
+        break;
+      case "ArrowLeft":
+      case "ArrowUp":
+        nextIndex = (currentIndex - 1 + aiCases.length) % aiCases.length;
+        break;
+      case "Home":
+        nextIndex = 0;
+        break;
+      case "End":
+        nextIndex = aiCases.length - 1;
+        break;
+      default:
+        return;
+    }
+
+    event.preventDefault();
+    selectTabByIndex(nextIndex);
+  };
 
   return (
     <>
@@ -107,6 +150,7 @@ export function AiUsageModal({ triggerClassName }: AiUsageModalProps) {
               <div
                 role="tablist"
                 aria-label="AI usage cases"
+                onKeyDown={onTabListKeyDown}
                 className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap sm:overflow-visible [&::-webkit-scrollbar]:hidden"
               >
                 {aiCases.map((item) => {
@@ -114,9 +158,12 @@ export function AiUsageModal({ triggerClassName }: AiUsageModalProps) {
                   return (
                     <button
                       key={item.id}
+                      id={`ai-case-tab-${item.id}`}
                       type="button"
                       role="tab"
                       aria-selected={selected}
+                      aria-controls={`ai-case-panel-${item.id}`}
+                      tabIndex={selected ? 0 : -1}
                       onClick={() => setActiveId(item.id)}
                       className={
                         selected
@@ -133,8 +180,9 @@ export function AiUsageModal({ triggerClassName }: AiUsageModalProps) {
 
             {activeCase && (
               <article
+                id={`ai-case-panel-${activeCase.id}`}
                 role="tabpanel"
-                aria-label={activeCase.title}
+                aria-labelledby={`ai-case-tab-${activeCase.id}`}
                 className="rounded-3xl border border-slate-200/80 bg-white/90 p-4 sm:p-5"
               >
                 <div className="flex flex-wrap items-center gap-2">

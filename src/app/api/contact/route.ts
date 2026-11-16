@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { saveMessage } from "@/lib/messages";
+import {
+  consumeRateLimit,
+  getClientIp,
+} from "@/lib/rate-limit";
 import { site } from "@/lib/site";
 
 const contactSchema = z.object({
@@ -62,6 +66,18 @@ export async function POST(request: Request) {
     // Honeypot: bots that fill hidden "website" are silently accepted.
     if (parsed.data.website?.trim()) {
       return NextResponse.json({ ok: true, emailed: false, stored: false });
+    }
+
+    const ip = getClientIp(request);
+    const rate = consumeRateLimit(`contact:${ip}`);
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: "Too many messages. Please try again later." },
+        {
+          status: 429,
+          headers: { "Retry-After": String(rate.retryAfterSec) },
+        },
+      );
     }
 
     const { name, email, message } = parsed.data;

@@ -26,7 +26,7 @@ The **View resume** button opens a modal with an embedded PDF preview and a PDF 
 
 ## Contact form backend
 
-`POST /api/contact` validates the payload with Zod. A hidden honeypot field (`website`) is silently discarded when filled (basic bot filter; no IP rate limit on serverless).
+`POST /api/contact` validates the payload with Zod. A hidden honeypot field (`website`) is silently discarded when filled (basic bot filter), plus a per-IP in-memory rate limit (5 requests per 10 minutes per serverless instance).
 
 - **Development:** messages are saved to `data/messages.json`. Resend is optional.
 - **Production (Vercel):** `RESEND_API_KEY` is required. Messages are emailed; they are not written to disk (serverless filesystem is ephemeral).
